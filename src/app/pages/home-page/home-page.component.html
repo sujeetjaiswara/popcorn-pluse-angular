@@ -1,0 +1,17 @@
+<div class="flex items-center justify-between space-x-2">
+  <div class="w-full">
+    <app-search-input />
+  </div>
+  <div class="w-2/6">
+    <app-filter-input
+      [categories]="categories()"
+      (selectedCategory)="filterMovies($event)"
+    />
+  </div>
+</div>
+
+<div class="mt-5 flex flex-wrap">
+  @for (movie of movies(); track $index) {
+  <app-move-list-item [movie]="movie"></app-move-list-item>
+  }
+</div>
