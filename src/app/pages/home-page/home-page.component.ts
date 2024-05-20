@@ -6,12 +6,14 @@ import {
   DestroyRef,
   WritableSignal,
   afterNextRender,
+  effect,
   inject,
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../components/button/button.component';
+import { CardPlaceholderComponent } from '../../components/card-placeholder/card-placeholder.component';
 import { FilterInputComponent } from '../../components/filter-input/filter-input.component';
 import { MoveListItemComponent } from '../../components/move-list-item/move-list-item.component';
 import { SearchInputComponent } from '../../components/search-input/search-input.component';
@@ -31,6 +33,7 @@ import { DataService } from '../../services/data.service';
     MoveListItemComponent,
     SpinnerComponent,
     ButtonComponent,
+    CardPlaceholderComponent,
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
@@ -58,6 +61,10 @@ export class HomePageComponent {
       console.log('🚀afterNextRender() called.');
       this.getMovieByCategory();
     });
+
+    effect(() => {
+      console.log('movies:[]', this.movies());
+    });
   }
 
   getMovieByCategory() {
@@ -79,10 +86,15 @@ export class HomePageComponent {
           );
 
           // Concatenate unique movies to the existing movies array
-          this.movies.set([...this.movies(), ...uniqueMovies]);
+          // this.movies.set([...this.movies(), ...uniqueMovies]);
+
+          this.movies.update((items) => [...items, ...uniqueMovies]);
         },
         error: (err) => console.error(err),
-        complete: () => this.isLoading.set(false),
+        complete: () => {
+          this.isLoading.set(false);
+          this.isLoadingMore.set(false);
+        },
       });
   }
 
@@ -112,6 +124,5 @@ export class HomePageComponent {
     this.page.set(this.page() + 1);
     this.isLoadingMore.set(true);
     this.getMovieByCategory();
-    this.isLoadingMore.set(false);
   }
 }
