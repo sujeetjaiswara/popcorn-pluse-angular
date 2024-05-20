@@ -3,11 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-// ::view-transition-old(root),
-// ::view-transition-new(root) {
-//   animation-duration: 0.2s;
-// }
-
 @keyframes fade-in {
   from {
     opacity: 0;
