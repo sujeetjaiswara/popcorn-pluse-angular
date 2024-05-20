@@ -1,37 +1,50 @@
 import { JsonPipe } from '@angular/common';
-import { Component, OnInit, WritableSignal, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  WritableSignal,
+  afterNextRender,
+  inject,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
+import { ButtonComponent } from '../../components/button/button.component';
 import { FilterInputComponent } from '../../components/filter-input/filter-input.component';
 import { MoveListItemComponent } from '../../components/move-list-item/move-list-item.component';
 import { SearchInputComponent } from '../../components/search-input/search-input.component';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { Category } from '../../interfaces/category';
 import { Movie } from '../../interfaces/movie';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
   imports: [
     RouterLink,
+    JsonPipe,
     SearchInputComponent,
     FilterInputComponent,
     MoveListItemComponent,
-    JsonPipe,
+    SpinnerComponent,
+    ButtonComponent,
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomePageComponent implements OnInit {
-  PUBLIC_ENDPOINT = 'https://api.themoviedb.org/3';
-  PUBLIC_API_KEY = '70341816ef426fc937b20d6588bd9773';
-
-  public movies: WritableSignal<Movie[]> = signal([]);
-
-  public selectedCategory = 'popular';
-
-  public page = 1;
-  public searchTerm = '';
-  public isLoading = false;
-  public isLoadingMore = false;
+export class HomePageComponent {
+  private dataService = inject(DataService);
+  private readonly destroy: DestroyRef = inject(DestroyRef);
+  public movies: WritableSignal<Movie[]> = signal<Movie[]>([]);
+  public selectedCategory = signal<string>('popular');
+  public page = signal<number>(1);
+  public searchTerm = signal<string>('');
+  public isLoading = signal<boolean>(false);
+  public isLoadingMore = signal<boolean>(false);
 
   public categories: WritableSignal<Category[]> = signal([
     { value: 'popular', name: 'Popular' },
@@ -40,67 +53,65 @@ export class HomePageComponent implements OnInit {
     { value: 'upcoming', name: 'Upcoming' },
   ]);
 
-  ngOnInit() {
-    console.log('ngOnInit() called.');
-    this.getMovieByCategory();
+  constructor(private cd: ChangeDetectorRef) {
+    afterNextRender(() => {
+      console.log('🚀afterNextRender() called.');
+      this.getMovieByCategory();
+    });
   }
 
-  async getMovieByCategory() {
-    this.isLoading = true;
+  getMovieByCategory() {
+    console.log('getMovieByCategory() called.');
+    this.isLoading.set(true);
+    this.dataService
+      .getMovieByCategory(this.selectedCategory(), this.page())
+      .pipe(takeUntilDestroyed(this.destroy))
+      .subscribe({
+        next: (data: any) => {
+          // Create a Set to keep track of unique movie IDs
+          const uniqueMovieIds = new Set(
+            this.movies().map((movie: Movie) => movie.id)
+          );
 
-    const apiUrl = `${this.PUBLIC_ENDPOINT}/movie/${this.selectedCategory}?api_key=${this.PUBLIC_API_KEY}&page=${this.page}`;
+          // Filter out duplicates by checking if the movie ID is already in the Set
+          const uniqueMovies = data.results.filter(
+            (movie: Movie) => !uniqueMovieIds.has(movie.id)
+          );
 
-    return fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-
-        // Create a Set to keep track of unique movie IDs
-        const uniqueMovieIds = new Set(
-          this.movies().map((movie: any) => movie.id)
-        );
-
-        // Filter out duplicates by checking if the movie ID is already in the Set
-        const uniqueMovies = data.results.filter(
-          (movie: any) => !uniqueMovieIds.has(movie.id)
-        );
-
-        // Concatenate unique movies to the existing movies array
-        this.movies.set([...this.movies(), ...uniqueMovies]);
-
-        this.isLoading = false;
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        this.isLoading = false;
+          // Concatenate unique movies to the existing movies array
+          this.movies.set([...this.movies(), ...uniqueMovies]);
+        },
+        error: (err) => console.error(err),
+        complete: () => this.isLoading.set(false),
       });
   }
 
-  async loadMore() {
-    this.page = this.page + 1;
-    this.isLoadingMore = true;
-    await this.getMovieByCategory();
-    this.isLoadingMore = false;
-  }
-
   filterMovies(value: string) {
-    this.selectedCategory = value;
+    this.selectedCategory.set(value);
     this.movies.set([]);
     this.getMovieByCategory();
   }
 
   searchMovie() {
-    this.page = 1;
+    this.page.set(1);
     if (this.searchTerm) {
-      const apiUrl = `${this.PUBLIC_ENDPOINT}/search/collection?query=${this.searchTerm}&include_adult=false&language=en-US&api_key=${this.PUBLIC_API_KEY}&page=${this.page}`;
-      fetch(apiUrl)
-        .then((response) => response.json())
-        .then((data) => {
-          this.movies.set(data.results);
-        })
-        .catch((error) => console.error('Error:', error));
+      this.dataService
+        .searchMovie(this.searchTerm(), this.page())
+        .pipe(takeUntilDestroyed(this.destroy))
+        .subscribe({
+          next: (data: any) => this.movies.set(data.results),
+          error: (err) => console.error('Error:', err),
+          complete: () => console.info('complete'),
+        });
     } else {
       this.getMovieByCategory();
     }
+  }
+
+  loadMore() {
+    this.page.set(this.page() + 1);
+    this.isLoadingMore.set(true);
+    this.getMovieByCategory();
+    this.isLoadingMore.set(false);
   }
 }

@@ -11,7 +11,19 @@
 </div>
 
 <div class="mt-5 flex flex-wrap">
-  @for (movie of movies(); track $index) {
+  <!-- {{ movies()[0] | json }} -->
+  @if (isLoading() && !isLoadingMore()) {
+  <div class="flex flex-col items-center justify-center gap-2 w-full p-10">
+    <app-spinner /> Loading...
+  </div>
+  }@else { @for (movie of movies(); track $index) {
   <app-move-list-item [movie]="movie"></app-move-list-item>
-  }
+  } }
+</div>
+
+<div class="flex justify-center my-3">
+  <app-button [isDisabled]="isLoadingMore()" (clicked)="loadMore()">
+    @if (isLoadingMore()) {
+    <app-spinner /> Loading ... }@else { Load More }
+  </app-button>
 </div>
