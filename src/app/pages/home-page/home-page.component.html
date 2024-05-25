@@ -31,7 +31,7 @@
     <app-card-placeholder />
     <app-card-placeholder />
   </div>
-  }@else { @for (movie of movies(); track $index) {
+  }@else { @for (movie of movieService.movies(); track $index) {
   <app-move-list-item [movie]="movie"></app-move-list-item>
   } }
 </div>

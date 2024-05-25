@@ -19,8 +19,8 @@ import { MoveListItemComponent } from '../../components/move-list-item/move-list
 import { SearchInputComponent } from '../../components/search-input/search-input.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { Category } from '../../interfaces/category';
-import { Movie } from '../../interfaces/movie';
 import { DataService } from '../../services/data.service';
+import { MovieService } from '../../services/movie.service';
 
 @Component({
   selector: 'app-home-page',
@@ -41,8 +41,8 @@ import { DataService } from '../../services/data.service';
 })
 export class HomePageComponent {
   private dataService = inject(DataService);
+  protected movieService = inject(MovieService);
   private readonly destroy: DestroyRef = inject(DestroyRef);
-  public movies: WritableSignal<Movie[]> = signal<Movie[]>([]);
   public selectedCategory = signal<string>('popular');
   public page = signal<number>(1);
   public searchTerm = signal<string>('');
@@ -59,11 +59,13 @@ export class HomePageComponent {
   constructor(private cd: ChangeDetectorRef) {
     afterNextRender(() => {
       console.log('🚀afterNextRender() called.');
-      this.getMovieByCategory();
+      if (this.movieService.movies().length === 0) {
+        this.getMovieByCategory();
+      }
     });
 
     effect(() => {
-      console.log('movies:[]', this.movies());
+      console.log('movies:[]', this.movieService.movies());
     });
   }
 
@@ -75,20 +77,7 @@ export class HomePageComponent {
       .pipe(takeUntilDestroyed(this.destroy))
       .subscribe({
         next: (data: any) => {
-          // Create a Set to keep track of unique movie IDs
-          const uniqueMovieIds = new Set(
-            this.movies().map((movie: Movie) => movie.id)
-          );
-
-          // Filter out duplicates by checking if the movie ID is already in the Set
-          const uniqueMovies = data.results.filter(
-            (movie: Movie) => !uniqueMovieIds.has(movie.id)
-          );
-
-          // Concatenate unique movies to the existing movies array
-          // this.movies.set([...this.movies(), ...uniqueMovies]);
-
-          this.movies.update((items) => [...items, ...uniqueMovies]);
+          this.movieService.setMovies(data.results);
         },
         error: (err) => console.error(err),
         complete: () => {
@@ -100,7 +89,7 @@ export class HomePageComponent {
 
   filterMovies(value: string) {
     this.selectedCategory.set(value);
-    this.movies.set([]);
+    this.movieService.movies.set([]);
     this.getMovieByCategory();
   }
 
@@ -111,7 +100,7 @@ export class HomePageComponent {
         .searchMovie(this.searchTerm(), this.page())
         .pipe(takeUntilDestroyed(this.destroy))
         .subscribe({
-          next: (data: any) => this.movies.set(data.results),
+          next: (data: any) => this.movieService.movies.set(data.results),
           error: (err) => console.error('Error:', err),
           complete: () => console.info('complete'),
         });
