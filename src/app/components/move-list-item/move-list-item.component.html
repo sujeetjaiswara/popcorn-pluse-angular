@@ -6,13 +6,12 @@
     @if (movie()?.poster_path) {
     <div>
       <img
-        class="rounded-t-md"
-        ngSrc="{{ getPoster(movie()?.poster_path) }}"
-        alt=""
+        class="rounded-t-md aspect-auto"
+        [ngSrc]="getPoster()"
+        [alt]="movie()?.backdrop_path"
         width="150"
         height="225"
         placeholder="data:image/png;base64,iVBORw0K..."
-        [placeholderConfig]="{ blur: true }"
         priority
       />
     </div>
@@ -29,8 +28,7 @@
       <span
         class="bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
       >
-        <!-- {{ getRating(movie()?.vote_average) }} / 10 -->
-        0/10
+        {{ movie()?.vote_average | number : "1.0-0" }}/10
       </span>
     </div>
   </div>

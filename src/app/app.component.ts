@@ -1,4 +1,8 @@
-import { Component, afterNextRender } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  afterNextRender,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { initFlowbite } from 'flowbite';
@@ -10,6 +14,7 @@ import { NavbarComponent } from './navbar/navbar.component';
   imports: [RouterOutlet, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   constructor(updates: SwUpdate) {

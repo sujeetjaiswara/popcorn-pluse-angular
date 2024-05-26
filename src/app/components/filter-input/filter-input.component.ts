@@ -1,4 +1,9 @@
-import { Component, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+} from '@angular/core';
 import { Category } from '../../interfaces/category';
 
 @Component({
@@ -7,6 +12,7 @@ import { Category } from '../../interfaces/category';
   imports: [],
   templateUrl: './filter-input.component.html',
   styleUrl: './filter-input.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterInputComponent {
   categories = input<Category[]>();

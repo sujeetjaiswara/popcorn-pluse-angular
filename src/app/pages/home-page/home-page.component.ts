@@ -57,6 +57,11 @@ export class HomePageComponent {
   ]);
 
   constructor(private cd: ChangeDetectorRef) {
+    // TODO: Refector this code
+    if (this.movieService.movies().length === 0) {
+      this.isLoading.set(true);
+    }
+
     afterNextRender(() => {
       console.log('🚀afterNextRender() called.');
       if (this.movieService.movies().length === 0) {
@@ -81,8 +86,8 @@ export class HomePageComponent {
         },
         error: (err) => console.error(err),
         complete: () => {
-          this.isLoading.set(false);
           this.isLoadingMore.set(false);
+          this.isLoading.set(false);
         },
       });
   }
