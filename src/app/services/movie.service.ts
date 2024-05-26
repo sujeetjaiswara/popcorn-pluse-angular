@@ -6,6 +6,7 @@ import { Movie } from '../interfaces/movie';
 })
 export class MovieService {
   public movies: WritableSignal<Movie[]> = signal<Movie[]>([]);
+  public selectedMovie: WritableSignal<Movie> = signal<Movie>();
 
   setMovies(data: Movie[]) {
     // Create a Set to keep track of unique movie IDs
@@ -19,5 +20,9 @@ export class MovieService {
     );
 
     this.movies.update((items) => [...items, ...uniqueMovies]);
+  }
+
+  setSelectedMovie(values: Movie) {
+    this.selectedMovie.set(values);
   }
 }
