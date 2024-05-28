@@ -55,5 +55,20 @@
       {{ movie()?.budget | currency }}
     </div>
     }
+
+    <!-- Homepage website -->
+    @if ( movie()?.homepage ) {
+    <div class="flex mt-2">
+      <div class="me-1">Homepage :</div>
+      <a
+        [href]="movie()?.homepage"
+        target="_blank"
+        rel="noreferrer"
+        class="btn-link text-primary-600 hover:underline underline-offset-4"
+      >
+        {{ movie()?.homepage }}
+      </a>
+    </div>
+    }
   </div>
 </div>

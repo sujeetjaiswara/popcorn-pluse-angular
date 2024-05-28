@@ -17,4 +17,5 @@ export interface Movie {
   spoken_languages: any;
   genres: any;
   budget: any;
+  homepage: any;
 }

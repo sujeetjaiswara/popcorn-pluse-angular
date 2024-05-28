@@ -31,4 +31,10 @@ export class DataService {
       `${this.END_POINT}/movie/${id}/similar?api_key=${this.API_KEY}`
     );
   }
+
+  getWatchProviders(id: number) {
+    this.http.get(
+      `${this.END_POINT}/movie/${id}/watch/providers?api_key=${this.API_KEY}`
+    );
+  }
 }
