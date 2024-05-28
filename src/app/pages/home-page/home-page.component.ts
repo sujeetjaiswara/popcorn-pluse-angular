@@ -40,9 +40,9 @@ import { MovieService } from '../../services/movie.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent {
-  private dataService = inject(DataService);
+  protected dataService = inject(DataService);
   protected movieService = inject(MovieService);
-  private readonly destroy: DestroyRef = inject(DestroyRef);
+  private destroy: DestroyRef = inject(DestroyRef);
   public selectedCategory = signal<string>('popular');
   public page = signal<number>(1);
   public searchTerm = signal<string>('');
@@ -70,20 +70,18 @@ export class HomePageComponent {
     });
 
     effect(() => {
-      console.log('movies:[]', this.movieService.movies());
+      // console.log('movies:[]', this.movieService.movies());
     });
   }
 
   getMovieByCategory() {
-    console.log('getMovieByCategory() called.');
     this.isLoading.set(true);
     this.dataService
       .getMovieByCategory(this.selectedCategory(), this.page())
       .pipe(takeUntilDestroyed(this.destroy))
       .subscribe({
-        next: (data: any) => {
-          this.movieService.setMovies(data.results);
-        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        next: (data: any) => this.movieService.setMovies(data.results),
         error: (err) => console.error(err),
         complete: () => {
           this.isLoadingMore.set(false);
@@ -105,6 +103,7 @@ export class HomePageComponent {
         .searchMovie(this.searchTerm(), this.page())
         .pipe(takeUntilDestroyed(this.destroy))
         .subscribe({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           next: (data: any) => this.movieService.movies.set(data.results),
           error: (err) => console.error('Error:', err),
           complete: () => console.info('complete'),

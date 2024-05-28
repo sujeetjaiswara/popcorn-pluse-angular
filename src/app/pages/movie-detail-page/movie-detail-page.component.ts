@@ -1,68 +1,70 @@
+import { CurrencyPipe, DecimalPipe, JsonPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   afterNextRender,
+  computed,
   inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { DataService } from '../../services/data.service';
 import { MovieService } from '../../services/movie.service';
 
 @Component({
   selector: 'app-movie-detail-page',
   standalone: true,
-  imports: [],
+  imports: [JsonPipe, DecimalPipe, CurrencyPipe],
   templateUrl: './movie-detail-page.component.html',
   styleUrl: './movie-detail-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieDetailPageComponent {
   private route = inject(ActivatedRoute);
-  private dataService = inject(DataService);
+  private destroy: DestroyRef = inject(DestroyRef);
+  protected dataService = inject(DataService);
   protected movieService = inject(MovieService);
-  private subDetail = new Subscription();
-  private subSimilar = new Subscription();
-  // public similar: WritableSignal<Movie> = signal('');
 
   constructor(private _cd: ChangeDetectorRef) {
     afterNextRender(() => {
-      console.log(this.route.snapshot.paramMap.get('id'));
+      const movieId = Number(this.route.snapshot.paramMap.get('id'));
+      this.getDetail(movieId);
     });
   }
 
   getDetail(id: number) {
-    this.subDetail = this.dataService.getMovieDetail(id).subscribe({
-      next: (rs) => this.movieService.setSelectedMovie(rs),
-      error: (err) => console.error(err),
-      complete: () => this._cd.detectChanges(),
-    });
+    this.dataService
+      .getMovieDetail(id)
+      .pipe(takeUntilDestroyed(this.destroy))
+      .subscribe({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        next: (data: any) => this.movieService.setSelectedMovie(data),
+        error: (err) => console.error(err),
+        complete: () => this._cd.detectChanges(),
+      });
   }
 
-  // getSimilar(id: number) {
-  //   this.subSimilar = this.dataService.getSimilarMovies(id).subscribe({
-  //     next: (rs) => (this.similar = [...rs.results]),
-  //     error: (err) => console.error(err),
-  //     complete: () => this._cd.detectChanges(),
-  //   });
-  // }
-
-  trackByFn(index: number, el: any): number {
-    return el.id;
+  getSimilar(id: number) {
+    this.dataService
+      .getSimilarMovies(id)
+      .pipe(takeUntilDestroyed(this.destroy))
+      .subscribe({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        next: (data: any) => this.movieService.setSimilarMovies(data.results),
+        error: (err) => console.error(err),
+        complete: () => this._cd.detectChanges(),
+      });
   }
+
+  getPoster = computed(() => {
+    return `https://image.tmdb.org/t/p/w220_and_h330_face${
+      this.movieService.selectedMovie()?.poster_path
+    }`;
+  });
 
   onImageError(poster_path: string) {
     console.warn(`${poster_path} image not able to loaded`);
-  }
-
-  ngOnDestroy() {
-    if (this.subDetail) {
-      this.subDetail.unsubscribe();
-    }
-
-    if (this.subSimilar) {
-      this.subSimilar.unsubscribe();
-    }
   }
 }

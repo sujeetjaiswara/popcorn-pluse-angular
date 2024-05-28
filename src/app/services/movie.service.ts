@@ -1,12 +1,13 @@
-import { Injectable, WritableSignal, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Movie } from '../interfaces/movie';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MovieService {
-  public movies: WritableSignal<Movie[]> = signal<Movie[]>([]);
-  public selectedMovie: WritableSignal<Movie> = signal<Movie>();
+  public movies = signal<Movie[]>([]);
+  public selectedMovie = signal<Movie | null>(null);
+  public similar = signal<Movie[]>([]);
 
   setMovies(data: Movie[]) {
     // Create a Set to keep track of unique movie IDs
@@ -24,5 +25,9 @@ export class MovieService {
 
   setSelectedMovie(values: Movie) {
     this.selectedMovie.set(values);
+  }
+
+  setSimilarMovies(data: Movie[]) {
+    this.similar.set([...data]);
   }
 }

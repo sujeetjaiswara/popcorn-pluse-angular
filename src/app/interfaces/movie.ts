@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Movie {
   adult: boolean;
   backdrop_path: string;
@@ -13,4 +14,7 @@ export interface Movie {
   video: boolean;
   vote_average: number;
   vote_count: number;
+  spoken_languages: any;
+  genres: any;
+  budget: any;
 }
