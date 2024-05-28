@@ -1,1 +1,59 @@
-<p>movie-detail works!</p>
+<div
+  class="flex rounded-md bg-dark bg-cover bg-center bg-gradient-to-r from-red-50 to-red-100 text-dark h-[30rem]"
+>
+  <!-- Poster -->
+  @if (movie()?.poster_path) {
+  <div class="p-3">
+    <img [src]="getPoster()" alt="" class="rounded-md w-96 md:w-96 lg:w-60" />
+  </div>
+  }
+
+  <div class="p-5">
+    <!-- Rating -->
+    <h2 class="font-semibold text-3xl mb-2">
+      {{ movie()?.title }}
+      <span
+        class="bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
+      >
+        {{ movie()?.vote_average | number : "1.0-0" }}/10
+      </span>
+    </h2>
+
+    <!-- overview -->
+    <p class="mb-2">
+      {{ movie()?.overview }}
+    </p>
+
+    <!-- Available in languages -->
+    @if (movie()?.spoken_languages) {
+    <div class="flex mt-2">
+      <div class="me-1">Available In :</div>
+      @for (language of movie()?.spoken_languages; track $index) {
+      {{ language.name }}
+      @if( movie()?.spoken_languages.length - 1 !== $index) {
+      <span class="me-1">,</span>
+      } }
+    </div>
+    }
+
+    <!-- Genres -->
+    @if (movie()?.genres) {
+    <div class="flex mt-2">
+      <div class="me-1">Genres :</div>
+      @for (genre of movie()?.genres; track $index) {
+      {{ genre.name }}
+      @if (movie()?.genres.length-1 !== $index) {
+      <span class="me-1">,</span>
+      } }
+    </div>
+    }
+
+    <!-- Budget -->
+    @if (movie()?.budget) {
+    <div class="flex mt-2">
+      <div class="me-1">Budget :</div>
+      {{ movie()?.budget | currency }}
+    </div>
+    }
+  </div>
+</div>

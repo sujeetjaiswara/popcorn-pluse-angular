@@ -5,18 +5,18 @@ import {
   Component,
   DestroyRef,
   afterNextRender,
-  computed,
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
+import { MovieDetailComponent } from '../../components/movie-detail/movie-detail.component';
 import { DataService } from '../../services/data.service';
 import { MovieService } from '../../services/movie.service';
 
 @Component({
   selector: 'app-movie-detail-page',
   standalone: true,
-  imports: [JsonPipe, DecimalPipe, CurrencyPipe],
+  imports: [JsonPipe, DecimalPipe, CurrencyPipe, MovieDetailComponent],
   templateUrl: './movie-detail-page.component.html',
   styleUrl: './movie-detail-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -57,12 +57,6 @@ export class MovieDetailPageComponent {
         complete: () => this._cd.detectChanges(),
       });
   }
-
-  getPoster = computed(() => {
-    return `https://image.tmdb.org/t/p/w220_and_h330_face${
-      this.movieService.selectedMovie()?.poster_path
-    }`;
-  });
 
   onImageError(poster_path: string) {
     console.warn(`${poster_path} image not able to loaded`);
