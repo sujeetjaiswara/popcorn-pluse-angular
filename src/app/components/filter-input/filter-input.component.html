@@ -4,7 +4,6 @@
   aria-label="Categories"
   (change)="onSelectCategory($event)"
 >
-  <option selected>Choose</option>
   @for (category of categories(); track $index) {
   <option [value]="category.value">
     {{ category.name }}

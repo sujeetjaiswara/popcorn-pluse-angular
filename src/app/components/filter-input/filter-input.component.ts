@@ -18,8 +18,8 @@ export class FilterInputComponent {
   categories = input<Category[]>();
   selectedCategory = output<string>();
 
-  onSelectCategory(args: any) {
-    console.log(args.target.value);
-    this.selectedCategory.emit(args.target.value);
+  onSelectCategory(event: Event) {
+    const { value } = event.target as HTMLInputElement;
+    this.selectedCategory.emit(value);
   }
 }
