@@ -1,4 +1,4 @@
-import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import { CurrencyPipe, DecimalPipe, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,13 +6,13 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { Movie } from '../../interfaces/movie';
-import { MovieService } from '../../services/movie.service';
+import { Movie } from '../../models';
+import { MovieService } from '../../services';
 
 @Component({
   selector: 'app-movie-detail',
   standalone: true,
-  imports: [DecimalPipe, CurrencyPipe],
+  imports: [DecimalPipe, CurrencyPipe, NgOptimizedImage],
   templateUrl: './movie-detail.component.html',
   styleUrl: './movie-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

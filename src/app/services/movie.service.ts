@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Movie } from '../interfaces/movie';
+import { Movie } from '../models';
 
 @Injectable({
   providedIn: 'root',

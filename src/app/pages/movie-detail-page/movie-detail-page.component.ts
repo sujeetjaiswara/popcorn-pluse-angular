@@ -1,4 +1,4 @@
-import { CurrencyPipe, DecimalPipe, JsonPipe } from '@angular/common';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,14 +9,13 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { MovieDetailComponent } from '../../components/movie-detail/movie-detail.component';
-import { DataService } from '../../services/data.service';
-import { MovieService } from '../../services/movie.service';
+import { MovieDetailComponent } from '../../components';
+import { DataService, MovieService } from '../../services';
 
 @Component({
   selector: 'app-movie-detail-page',
   standalone: true,
-  imports: [JsonPipe, DecimalPipe, CurrencyPipe, MovieDetailComponent],
+  imports: [DecimalPipe, CurrencyPipe, MovieDetailComponent],
   templateUrl: './movie-detail-page.component.html',
   styleUrl: './movie-detail-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,4 +1,4 @@
-import { DecimalPipe, JsonPipe, NgOptimizedImage } from '@angular/common';
+import { DecimalPipe, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,12 +6,12 @@ import {
   input,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Movie } from '../../interfaces/movie';
+import { Movie } from '../../models';
 
 @Component({
   selector: 'app-move-list-item',
   standalone: true,
-  imports: [JsonPipe, RouterLink, NgOptimizedImage, DecimalPipe],
+  imports: [RouterLink, NgOptimizedImage, DecimalPipe],
   templateUrl: './move-list-item.component.html',
   styleUrl: './move-list-item.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

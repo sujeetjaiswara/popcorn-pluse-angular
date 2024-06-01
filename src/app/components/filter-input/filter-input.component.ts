@@ -4,7 +4,7 @@ import {
   input,
   output,
 } from '@angular/core';
-import { Category } from '../../interfaces/category';
+import { Category } from '../../models';
 
 @Component({
   selector: 'app-filter-input',

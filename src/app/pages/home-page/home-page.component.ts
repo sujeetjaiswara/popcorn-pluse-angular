@@ -1,4 +1,3 @@
-import { JsonPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,22 +11,24 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { ButtonComponent } from '../../components/button/button.component';
-import { CardPlaceholderComponent } from '../../components/card-placeholder/card-placeholder.component';
-import { FilterInputComponent } from '../../components/filter-input/filter-input.component';
-import { MoveListItemComponent } from '../../components/move-list-item/move-list-item.component';
-import { SearchInputComponent } from '../../components/search-input/search-input.component';
-import { SpinnerComponent } from '../../components/spinner/spinner.component';
-import { Category } from '../../interfaces/category';
-import { DataService } from '../../services/data.service';
-import { MovieService } from '../../services/movie.service';
+import {
+  FilterInputComponent,
+  MoveListItemComponent,
+  SearchInputComponent,
+} from '../../components';
+import {
+  ButtonComponent,
+  CardPlaceholderComponent,
+  SpinnerComponent,
+} from '../../components/ui';
+import { Category } from '../../models';
+import { DataService, MovieService } from '../../services';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
   imports: [
     RouterLink,
-    JsonPipe,
     SearchInputComponent,
     FilterInputComponent,
     MoveListItemComponent,
