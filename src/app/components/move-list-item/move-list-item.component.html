@@ -6,7 +6,7 @@
     @if (movie()?.poster_path) {
     <div>
       <img
-        class="rounded-t-md aspect-auto border"
+        class="rounded-t-md aspect-auto"
         [ngSrc]="getPoster()"
         [alt]="movie()?.backdrop_path"
         width="150"

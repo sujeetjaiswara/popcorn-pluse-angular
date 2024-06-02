@@ -1,6 +1,6 @@
 {
-  "name": "popcorn-pluse-angular",
-  "short_name": "popcorn-pluse-angular",
+  "name": "AnguCinema",
+  "short_name": "AnguCinema",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
