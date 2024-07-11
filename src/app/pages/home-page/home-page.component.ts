@@ -9,20 +9,12 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
-import {
-  FilterInputComponent,
-  MoveListItemComponent,
-  SearchInputComponent,
-} from '../../components';
-import {
-  ButtonComponent,
-  CardPlaceholderComponent,
-  SpinnerComponent,
-} from '../../components/ui';
-import { Category } from '../../models';
-import { DataService, MovieService } from '../../services';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {RouterLink} from '@angular/router';
+import {FilterInputComponent, MoveListItemComponent, SearchInputComponent} from '../../components';
+import {ButtonComponent, CardPlaceholderComponent, SpinnerComponent} from '../../components/ui';
+import {Category} from '../../models';
+import {DataService, MovieService} from '../../services';
 
 @Component({
   selector: 'app-home-page',
@@ -51,10 +43,10 @@ export class HomePageComponent {
   public isLoadingMore = signal<boolean>(false);
 
   public categories: WritableSignal<Category[]> = signal([
-    { value: 'popular', name: 'Popular' },
-    { value: 'top_rated', name: 'Top Rated' },
-    { value: 'now_playing', name: 'Now Playing' },
-    { value: 'upcoming', name: 'Upcoming' },
+    {value: 'popular', name: 'Popular'},
+    {value: 'top_rated', name: 'Top Rated'},
+    {value: 'now_playing', name: 'Now Playing'},
+    {value: 'upcoming', name: 'Upcoming'},
   ]);
 
   constructor(private cd: ChangeDetectorRef) {

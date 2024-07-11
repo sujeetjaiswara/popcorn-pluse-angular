@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { environment } from '../../environments/environment';
+import {HttpClient} from '@angular/common/http';
+import {Injectable, inject} from '@angular/core';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -21,20 +21,14 @@ export class DataService {
   }
 
   getMovieDetail(id: number) {
-    return this.http.get(
-      `${this.END_POINT}/movie/${id}?api_key=${this.API_KEY}`
-    );
+    return this.http.get(`${this.END_POINT}/movie/${id}?api_key=${this.API_KEY}`);
   }
 
   getSimilarMovies(id: number) {
-    return this.http.get(
-      `${this.END_POINT}/movie/${id}/similar?api_key=${this.API_KEY}`
-    );
+    return this.http.get(`${this.END_POINT}/movie/${id}/similar?api_key=${this.API_KEY}`);
   }
 
   getWatchProviders(id: number) {
-    this.http.get(
-      `${this.END_POINT}/movie/${id}/watch/providers?api_key=${this.API_KEY}`
-    );
+    this.http.get(`${this.END_POINT}/movie/${id}/watch/providers?api_key=${this.API_KEY}`);
   }
 }

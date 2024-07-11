@@ -1,13 +1,7 @@
-import { CurrencyPipe, DecimalPipe, NgOptimizedImage } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-} from '@angular/core';
-import { Movie } from '../../models';
-import { MovieService } from '../../services';
+import {CurrencyPipe, DecimalPipe, NgOptimizedImage} from '@angular/common';
+import {ChangeDetectionStrategy, Component, computed, inject, input} from '@angular/core';
+import {Movie} from '../../models';
+import {MovieService} from '../../services';
 
 @Component({
   selector: 'app-movie-detail',
