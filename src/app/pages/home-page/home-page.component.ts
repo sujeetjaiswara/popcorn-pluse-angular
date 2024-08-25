@@ -41,6 +41,7 @@ import { DataService, MovieService } from '../../services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent {
+  private cd = inject(ChangeDetectorRef);
   protected dataService = inject(DataService);
   protected movieService = inject(MovieService);
   private destroy: DestroyRef = inject(DestroyRef);
@@ -57,7 +58,7 @@ export class HomePageComponent {
     { value: 'upcoming', name: 'Upcoming' },
   ]);
 
-  constructor(private cd: ChangeDetectorRef) {
+  constructor() {
     // TODO: Refector this code
     if (this.movieService.movies().length === 0) {
       this.isLoading.set(true);

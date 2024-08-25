@@ -21,12 +21,13 @@ import { DataService, MovieService } from '../../services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieDetailPageComponent {
+  private _cd = inject(ChangeDetectorRef);
   private route = inject(ActivatedRoute);
   private destroy: DestroyRef = inject(DestroyRef);
   protected dataService = inject(DataService);
   protected movieService = inject(MovieService);
 
-  constructor(private _cd: ChangeDetectorRef) {
+  constructor() {
     afterNextRender(() => {
       const movieId = Number(this.route.snapshot.paramMap.get('id'));
       this.getDetail(movieId);

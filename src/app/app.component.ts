@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  afterNextRender,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, afterNextRender, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { initFlowbite } from 'flowbite';
@@ -17,7 +13,9 @@ import { NavbarComponent } from './navbar/navbar.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  constructor(updates: SwUpdate) {
+  constructor() {
+    const updates = inject(SwUpdate);
+
     updates.versionUpdates.subscribe((evt: any) => {
       switch (evt.type) {
         case 'VERSION_DETECTED':
