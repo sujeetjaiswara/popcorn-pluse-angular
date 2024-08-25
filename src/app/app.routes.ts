@@ -1,14 +1,18 @@
 import { Routes } from '@angular/router';
-import { HomePageComponent } from './pages/home-page/home-page.component';
-import { MovieDetailPageComponent } from './pages/movie-detail-page/movie-detail-page.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomePageComponent,
+    loadComponent: () =>
+      import('./pages/home-page/home-page.component').then(
+        (m) => m.HomePageComponent
+      ),
   },
   {
     path: 'movie/:id',
-    component: MovieDetailPageComponent,
+    loadComponent: () =>
+      import('./pages/movie-detail-page/movie-detail-page.component').then(
+        (m) => m.MovieDetailPageComponent
+      ),
   },
 ];
