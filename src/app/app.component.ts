@@ -16,6 +16,7 @@ export class AppComponent {
   constructor() {
     const updates = inject(SwUpdate);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     updates.versionUpdates.subscribe((evt: any) => {
       switch (evt.type) {
         case 'VERSION_DETECTED':

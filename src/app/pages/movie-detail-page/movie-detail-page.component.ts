@@ -1,4 +1,4 @@
-import {CurrencyPipe, DecimalPipe} from '@angular/common';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,10 +7,11 @@ import {
   afterNextRender,
   inject,
 } from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {ActivatedRoute} from '@angular/router';
-import {MovieDetailComponent} from '../../components';
-import {DataService, MovieService} from '../../services';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
+import { MovieDetailComponent } from '../../components';
+import { Movie } from '../../models';
+import { DataService, MovieService } from '../../services';
 
 @Component({
   selector: 'app-movie-detail-page',
@@ -21,40 +22,44 @@ import {DataService, MovieService} from '../../services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieDetailPageComponent {
-  private _cd = inject(ChangeDetectorRef);
-  private route = inject(ActivatedRoute);
-  private destroy: DestroyRef = inject(DestroyRef);
-  protected dataService = inject(DataService);
-  protected movieService = inject(MovieService);
+  #cd = inject(ChangeDetectorRef);
+  #route = inject(ActivatedRoute);
+  #destroyRef: DestroyRef = inject(DestroyRef);
+  #dataService = inject(DataService);
+  #movieService = inject(MovieService);
+  movie$!: Movie | null;
 
   constructor() {
     afterNextRender(() => {
-      const movieId = Number(this.route.snapshot.paramMap.get('id'));
+      const movieId = Number(this.#route.snapshot.paramMap.get('id'));
       this.getDetail(movieId);
     });
   }
 
   getDetail(id: number) {
-    this.dataService
+    this.#dataService
       .getMovieDetail(id)
-      .pipe(takeUntilDestroyed(this.destroy))
+      .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        next: (data: any) => this.movieService.setSelectedMovie(data),
+        next: (data: any) => {
+          this.#movieService.setSelectedMovie(data);
+          this.movie$ = this.#movieService.selectedMovie();
+        },
         error: (err) => console.error(err),
-        complete: () => this._cd.detectChanges(),
+        complete: () => this.#cd.detectChanges(),
       });
   }
 
   getSimilar(id: number) {
-    this.dataService
+    this.#dataService
       .getSimilarMovies(id)
-      .pipe(takeUntilDestroyed(this.destroy))
+      .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        next: (data: any) => this.movieService.setSimilarMovies(data.results),
+        next: (data: any) => this.#movieService.setSimilarMovies(data.results),
         error: (err) => console.error(err),
-        complete: () => this._cd.detectChanges(),
+        complete: () => this.#cd.detectChanges(),
       });
   }
 

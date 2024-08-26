@@ -12,7 +12,11 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
-import { FilterInputComponent, MoveListItemComponent, SearchInputComponent } from '../../components';
+import {
+  FilterInputComponent,
+  MoveListItemComponent,
+  SearchInputComponent,
+} from '../../components';
 import { DataNotFoundComponent } from '../../components/data-not-found/data-not-found.component';
 import { ButtonComponent, CardPlaceholderComponent, SpinnerComponent } from '../../components/ui';
 import { Category, Movie } from '../../models';
@@ -39,21 +43,19 @@ export class HomePageComponent {
   #dataService = inject(DataService);
   #movieService = inject(MovieService);
   #destroy: DestroyRef = inject(DestroyRef);
+  #cd = inject(ChangeDetectorRef);
   #selectedCategory = signal<string>('popular');
   #page = signal<number>(1);
   #searchTerm = signal<string>('');
-
   movies: Movie[] = [];
   isLoading = false;
   isLoadingMore = false;
 
-  private cd = inject(ChangeDetectorRef);
-
   categories: WritableSignal<Category[]> = signal([
-    {value: 'popular', name: 'Popular'},
-    {value: 'top_rated', name: 'Top Rated'},
-    {value: 'now_playing', name: 'Now Playing'},
-    {value: 'upcoming', name: 'Upcoming'},
+    { value: 'popular', name: 'Popular' },
+    { value: 'top_rated', name: 'Top Rated' },
+    { value: 'now_playing', name: 'Now Playing' },
+    { value: 'upcoming', name: 'Upcoming' },
   ]);
 
   constructor() {
@@ -67,7 +69,7 @@ export class HomePageComponent {
 
       if (this.#movieService.movies().length > 0) {
         this.movies = this.#movieService.movies();
-        this.cd.markForCheck();
+        this.#cd.markForCheck();
         return;
       }
 
@@ -77,19 +79,19 @@ export class HomePageComponent {
     effect(() => {
       console.log('🚦isLoading effect() called.');
       this.isLoading = this.#movieService.isLoading();
-      this.cd.markForCheck();
+      this.#cd.markForCheck();
     });
 
     effect(() => {
       console.log('🚦isLoadingMore effect() called.');
       this.isLoadingMore = this.#movieService.isLoadingMore();
-      this.cd.markForCheck();
+      this.#cd.markForCheck();
     });
 
     effect(() => {
       console.log('🚦movies effect() called.');
       this.movies = this.#movieService.movies();
-      this.cd.markForCheck();
+      this.#cd.markForCheck();
     });
   }
 
