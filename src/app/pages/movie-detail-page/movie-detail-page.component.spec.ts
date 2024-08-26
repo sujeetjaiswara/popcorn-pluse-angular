@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MovieDetailPageComponent } from './movie-detail-page.component';
+import {MovieDetailPageComponent} from './movie-detail-page.component';
 
 describe('MovieDetailPageComponent', () => {
   let component: MovieDetailPageComponent;
@@ -8,10 +8,9 @@ describe('MovieDetailPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MovieDetailPageComponent]
-    })
-    .compileComponents();
-    
+      imports: [MovieDetailPageComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(MovieDetailPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

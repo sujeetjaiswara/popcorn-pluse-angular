@@ -1,4 +1,4 @@
-import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import {CurrencyPipe, DecimalPipe} from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,10 +7,10 @@ import {
   afterNextRender,
   inject,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
-import { MovieDetailComponent } from '../../components';
-import { DataService, MovieService } from '../../services';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {ActivatedRoute} from '@angular/router';
+import {MovieDetailComponent} from '../../components';
+import {DataService, MovieService} from '../../services';
 
 @Component({
   selector: 'app-movie-detail-page',

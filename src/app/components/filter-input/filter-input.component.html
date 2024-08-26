@@ -5,8 +5,8 @@
   (change)="onSelectCategory($event)"
 >
   @for (category of categories(); track $index) {
-  <option [value]="category.value">
-    {{ category.name }}
-  </option>
+    <option [value]="category.value">
+      {{ category.name }}
+    </option>
   }
 </select>

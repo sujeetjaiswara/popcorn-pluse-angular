@@ -8,7 +8,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:popcorn-pluse-angular": "node dist/popcorn-pluse-angular/server/server.mjs",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "format-check": "prettier --check 'src/app/**/*.{json,css,scss,less,md,ts,html}'",
+    "format": "prettier --write 'src/app/**/*.{json,css,scss,less,md,ts,html}'"
   },
   "private": true,
   "dependencies": {
@@ -52,6 +54,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "postcss": "^8.4.38",
+    "prettier": "^3.3.2",
     "tailwindcss": "^3.4.3",
     "typescript": "~5.4.2"
   },

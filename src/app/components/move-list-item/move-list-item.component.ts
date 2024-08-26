@@ -1,12 +1,7 @@
-import { DecimalPipe, NgOptimizedImage } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { Movie } from '../../models';
+import {DecimalPipe, NgOptimizedImage} from '@angular/common';
+import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
+import {RouterLink} from '@angular/router';
+import {Movie} from '../../models';
 
 @Component({
   selector: 'app-move-list-item',
@@ -20,8 +15,6 @@ export class MoveListItemComponent {
   movie = input<Movie>();
 
   getPoster = computed(() => {
-    return `https://image.tmdb.org/t/p/w220_and_h330_face${
-      this.movie()?.poster_path
-    }`;
+    return `https://image.tmdb.org/t/p/w220_and_h330_face${this.movie()?.poster_path}`;
   });
 }

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MoveListItemComponent } from './move-list-item.component';
+import {MoveListItemComponent} from './move-list-item.component';
 
 describe('MoveListItemComponent', () => {
   let component: MoveListItemComponent;
@@ -8,10 +8,9 @@ describe('MoveListItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MoveListItemComponent]
-    })
-    .compileComponents();
-    
+      imports: [MoveListItemComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(MoveListItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
