@@ -1,1 +1,5 @@
-<app-movie-detail [movie]="movie$" />
+@if (isLoading()) {
+  <app-movie-detail-shimmer />
+} @else {
+  <app-movie-detail [movie]="movie$" />
+}

@@ -6,17 +6,20 @@ import {
   DestroyRef,
   afterNextRender,
   inject,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
+import { finalize } from 'rxjs';
 import { MovieDetailComponent } from '../../components';
 import { Movie } from '../../models';
 import { DataService, MovieService } from '../../services';
+import { MovieDetailShimmerComponent } from './movie-detail-shimmer/movie-detail-shimmer.component';
 
 @Component({
   selector: 'app-movie-detail-page',
   standalone: true,
-  imports: [DecimalPipe, CurrencyPipe, MovieDetailComponent],
+  imports: [DecimalPipe, CurrencyPipe, MovieDetailComponent, MovieDetailShimmerComponent],
   templateUrl: './movie-detail-page.component.html',
   styleUrl: './movie-detail-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,6 +31,7 @@ export class MovieDetailPageComponent {
   #dataService = inject(DataService);
   #movieService = inject(MovieService);
   movie$!: Movie | null;
+  isLoading = signal(true);
 
   constructor() {
     afterNextRender(() => {
@@ -37,9 +41,15 @@ export class MovieDetailPageComponent {
   }
 
   getDetail(id: number) {
+    this.isLoading.set(true);
     this.#dataService
       .getMovieDetail(id)
-      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .pipe(
+        finalize(() => {
+          this.isLoading.set(false);
+        }),
+        takeUntilDestroyed(this.#destroyRef),
+      )
       .subscribe({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         next: (data: any) => {
