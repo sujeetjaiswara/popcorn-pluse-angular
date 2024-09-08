@@ -2,14 +2,14 @@
   routerLink="/movie/{{ movie()?.id }}"
   class="hover:outline hover:outline-dark-500 hover:outline-2 hover:rounded m-1 flex gap-3"
 >
-  <div class="flex flex-col w-[150px] rounded">
+  <div class="flex flex-col md:w-[175px] xl:w-[175px] bg-white rounded">
     @if (movie()?.poster_path) {
       <div>
         <img
           class="rounded-t-md aspect-auto"
           [ngSrc]="getPoster()"
           [alt]="movie()?.backdrop_path"
-          width="150"
+          width="175"
           height="225"
           placeholder="data:image/png;base64,iVBORw0K..."
           priority
