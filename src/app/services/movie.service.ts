@@ -8,12 +8,14 @@ export class MovieService {
   #movies = signal<Movie[]>([]);
   #selectedMovie = signal<Movie | null>(null);
   #similar = signal<Movie[]>([]);
+  #searchTerm = signal<string>('');
   #isLoading = signal<boolean>(false);
   #isLoadingMore = signal<boolean>(false);
 
   // Getters
   readonly movies = this.#movies.asReadonly();
   readonly selectedMovie = this.#selectedMovie.asReadonly();
+  readonly searchTerm = this.#searchTerm.asReadonly();
   readonly isLoading = this.#isLoading.asReadonly();
   readonly isLoadingMore = this.#isLoadingMore.asReadonly();
 
@@ -41,6 +43,10 @@ export class MovieService {
 
   setSimilarMovies(data: Movie[]) {
     this.#similar.set([...data]);
+  }
+
+  setSearchTerm(term: string) {
+    this.#searchTerm.set(term);
   }
 
   resetMovieData() {

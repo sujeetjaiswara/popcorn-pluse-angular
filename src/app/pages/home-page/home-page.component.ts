@@ -97,8 +97,9 @@ export class HomePageComponent {
 
   getMovieByCategory() {
     this.searchTerm = '';
-
+    this.#movieService.setSearchTerm('');
     this.#movieService.setIsLoading(true);
+
     this.#dataService
       .getMovieByCategory(this.#selectedCategory(), this.#page())
       .pipe(
