@@ -1,10 +1,10 @@
-import { CurrencyPipe, DecimalPipe, JsonPipe } from '@angular/common';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
-  afterNextRender,
   effect,
   inject,
   signal,
@@ -27,7 +27,6 @@ import { MovieDetailShimmerComponent } from './movie-detail-shimmer/movie-detail
     CurrencyPipe,
     MovieDetailComponent,
     MovieDetailShimmerComponent,
-    JsonPipe,
     MoveListItemComponent,
     CardPlaceholderComponent,
   ],
@@ -48,13 +47,18 @@ export class MovieDetailPageComponent {
 
   constructor() {
     afterNextRender(() => {
-      const movieId = Number(this.#route.snapshot.paramMap.get('id'));
-      this.getDetail(movieId);
-      this.getSimilar(movieId);
+      this.#route.params.pipe(takeUntilDestroyed(this.#destroyRef)).subscribe((params) => {
+        const movieId = Number(params['id']);
+        this.getDetail(movieId);
+        this.getSimilar(movieId);
+      });
     });
 
     effect(() => {
       this.movie$ = this.#movieService.selectedMovie();
+    });
+
+    effect(() => {
       this.similarMovies$ = this.#movieService.similarMovies();
     });
   }
