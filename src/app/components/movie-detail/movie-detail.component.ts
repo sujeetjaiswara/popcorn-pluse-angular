@@ -16,8 +16,10 @@ export class MovieDetailComponent {
   protected movieService = inject(MovieService);
 
   getPoster = computed(() => {
-    return `https://image.tmdb.org/t/p/w220_and_h330_face${
-      this.movieService.selectedMovie()?.poster_path
-    }`;
+    return `https://image.tmdb.org/t/p/w500${this.movieService.selectedMovie()?.poster_path}`;
+  });
+
+  getBackdrop = computed(() => {
+    return `https://image.tmdb.org/t/p/w780${this.movieService.selectedMovie()?.backdrop_path}`;
   });
 }
