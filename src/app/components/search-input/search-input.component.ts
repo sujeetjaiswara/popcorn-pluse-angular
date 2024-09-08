@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, effect, inject, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, OnInit, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { MovieService } from '../../services/movie.service';
 
 @Component({
@@ -10,9 +11,10 @@ import { MovieService } from '../../services/movie.service';
   styleUrl: './search-input.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchInputComponent {
+export class SearchInputComponent implements OnInit {
   serachTerm = output<string>();
   #movieService = inject(MovieService);
+  #searchText$ = new Subject<string>();
   query = '';
 
   constructor() {
@@ -21,11 +23,14 @@ export class SearchInputComponent {
     });
   }
 
-  onKeydown(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
+  ngOnInit() {
+    this.#searchText$.pipe(debounceTime(500), distinctUntilChanged()).subscribe((searchTerm) => {
       this.#movieService.setSearchTerm(this.query);
-      this.serachTerm.emit(this.query);
-    }
+      this.serachTerm.emit(searchTerm);
+    });
+  }
+
+  onSearch() {
+    this.#searchText$.next(this.query);
   }
 }
