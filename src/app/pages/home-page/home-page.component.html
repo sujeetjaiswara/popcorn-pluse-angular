@@ -1,6 +1,6 @@
 <div class="flex items-center justify-between space-x-2">
   <div class="w-full">
-    <app-search-input />
+    <app-search-input (serachTerm)="onSearchMovie($event)" />
   </div>
   <div class="w-2/6">
     <app-filter-input [categories]="categories()" (selectedCategory)="filterMovies($event)" />

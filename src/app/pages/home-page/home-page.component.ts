@@ -46,10 +46,10 @@ export class HomePageComponent {
   #cd = inject(ChangeDetectorRef);
   #selectedCategory = signal<string>('popular');
   #page = signal<number>(1);
-  #searchTerm = signal<string>('');
   movies: Movie[] = [];
   isLoading = false;
   isLoadingMore = false;
+  searchTerm = '';
 
   categories: WritableSignal<Category[]> = signal([
     { value: 'popular', name: 'Popular' },
@@ -96,6 +96,8 @@ export class HomePageComponent {
   }
 
   getMovieByCategory() {
+    this.searchTerm = '';
+
     this.#movieService.setIsLoading(true);
     this.#dataService
       .getMovieByCategory(this.#selectedCategory(), this.#page())
@@ -110,7 +112,6 @@ export class HomePageComponent {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         next: (data: any) => this.#movieService.setMovies(data.results),
         error: (err) => console.error(err),
-        complete: () => console.info('✅getMovieByCategory() complete'),
       });
   }
 
@@ -120,22 +121,35 @@ export class HomePageComponent {
     this.getMovieByCategory();
   }
 
-  searchMovie() {
+  onSearchMovie(searchTerm: string) {
+    this.#movieService.resetMovieData();
     this.#page.set(1);
-    if (this.#searchTerm()) {
+    this.searchTerm = searchTerm;
+    this.searchMovie(this.searchTerm);
+  }
+
+  searchMovie(searchTerm: string) {
+    if (searchTerm) {
       this.#dataService
-        .searchMovie(this.#searchTerm(), this.#page())
-        .pipe(takeUntilDestroyed(this.#destroy))
+        .searchMovie(searchTerm, this.#page())
+        .pipe(
+          finalize(() => {
+            this.#movieService.setIsLoadingMore(false);
+          }),
+          takeUntilDestroyed(this.#destroy),
+        )
         .subscribe({
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           next: (data: any) => {
-            this.#movieService.resetMovieData();
             this.#movieService.setMovies(data.results);
           },
-          error: (err) => console.error('Error:', err),
-          complete: () => console.info('searchMovie() complete'),
+          error: (err) => {
+            console.error(err);
+          },
         });
     } else {
+      this.#movieService.resetMovieData();
+      this.#selectedCategory.set('popular');
       this.getMovieByCategory();
     }
   }
@@ -143,6 +157,11 @@ export class HomePageComponent {
   loadMore() {
     this.#page.set(this.#page() + 1);
     this.#movieService.setIsLoadingMore(true);
-    this.getMovieByCategory();
+
+    if (this.searchTerm) {
+      this.searchMovie(this.searchTerm);
+    } else {
+      this.getMovieByCategory();
+    }
   }
 }
