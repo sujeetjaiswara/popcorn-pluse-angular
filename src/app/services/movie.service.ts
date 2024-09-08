@@ -7,7 +7,7 @@ import { Movie } from '../models';
 export class MovieService {
   #movies = signal<Movie[]>([]);
   #selectedMovie = signal<Movie | null>(null);
-  #similar = signal<Movie[]>([]);
+  #similarMovies = signal<Movie[]>([]);
   #searchTerm = signal<string>('');
   #isLoading = signal<boolean>(false);
   #isLoadingMore = signal<boolean>(false);
@@ -15,6 +15,7 @@ export class MovieService {
   // Getters
   readonly movies = this.#movies.asReadonly();
   readonly selectedMovie = this.#selectedMovie.asReadonly();
+  readonly similarMovies = this.#similarMovies.asReadonly();
   readonly searchTerm = this.#searchTerm.asReadonly();
   readonly isLoading = this.#isLoading.asReadonly();
   readonly isLoadingMore = this.#isLoadingMore.asReadonly();
@@ -42,7 +43,7 @@ export class MovieService {
   }
 
   setSimilarMovies(data: Movie[]) {
-    this.#similar.set([...data]);
+    this.#similarMovies.set([...data]);
   }
 
   setSearchTerm(term: string) {

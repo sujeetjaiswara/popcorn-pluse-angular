@@ -3,3 +3,23 @@
 } @else {
   <app-movie-detail [movie]="movie$" />
 }
+
+@if (isLoadingSimilarMovies()) {
+  <div class="grid sm:grid-cols-5 md:grid-cols-6 xl:grid-cols-7 mt-5">
+    <app-card-placeholder />
+    <app-card-placeholder />
+    <app-card-placeholder />
+    <app-card-placeholder />
+    <app-card-placeholder />
+    <app-card-placeholder />
+    <app-card-placeholder />
+  </div>
+} @else {
+  <div class="grid sm:grid-cols-5 md:grid-cols-6 xl:grid-cols-7 mt-3">
+    @for (similarMovies of similarMovies$; track $index) {
+      <app-move-list-item [movie]="similarMovies"></app-move-list-item>
+    } @empty {
+      <span>No similar movies</span>
+    }
+  </div>
+}
