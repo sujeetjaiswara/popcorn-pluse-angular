@@ -6,29 +6,44 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class DataService {
-  private API_KEY = environment.PUBLIC_API_KEY;
-  private END_POINT = environment.PUBLIC_ENDPOINT;
-  private readonly http = inject(HttpClient);
+  #http = inject(HttpClient);
+  #API = environment.PUBLIC_ENDPOINT;
+  #KEY = environment.PUBLIC_API_KEY;
+  #LANG = 'en-IN'; //'hi-IN';
+  #REGION = 'IN';
+  #INCLUDE_ADULT = false;
 
   getMovieByCategory(selectedCategory: string, page: number) {
-    const apiUrl = `${this.END_POINT}/movie/${selectedCategory}?api_key=${this.API_KEY}&include_adult=false&include_video=false&language=en-US&page=${page}`;
-    return this.http.get(apiUrl);
+    let url = `${this.#API}/movie/${selectedCategory}?api_key=${this.#KEY}`;
+    url += `&language=${this.#LANG}`;
+    url += `&region=${this.#REGION}`;
+    url += `&include_adult=${this.#INCLUDE_ADULT}`;
+    url += `&page=${page}`;
+    return this.#http.get(url);
   }
 
   searchMovie(searchTerm: string, page: number) {
-    const apiUrl = `${this.END_POINT}/search/collection?query=${searchTerm}&include_adult=false&language=en-US&api_key=${this.API_KEY}&page=${page}`;
-    return this.http.get(apiUrl);
+    let url = `${this.#API}/search/movie?query=${searchTerm}`;
+    url += `&include_adult=${this.#INCLUDE_ADULT}`;
+    url += `&language=${this.#LANG}`;
+    url += `&region=${this.#REGION}`;
+    url += `&api_key=${this.#KEY}`;
+    url += `&page=${page}`;
+    return this.#http.get(url);
   }
 
   getMovieDetail(id: number) {
-    return this.http.get(`${this.END_POINT}/movie/${id}?api_key=${this.API_KEY}`);
+    const apiUrl = `${this.#API}/movie/${id}?api_key=${this.#KEY}&language=${this.#LANG}&region=${this.#REGION}`;
+    return this.#http.get(apiUrl);
   }
 
   getSimilarMovies(id: number) {
-    return this.http.get(`${this.END_POINT}/movie/${id}/similar?api_key=${this.API_KEY}`);
+    const apiUrl = `${this.#API}/movie/${id}/similar?api_key=${this.#KEY}&language=${this.#LANG}&region=${this.#REGION}`;
+    return this.#http.get(apiUrl);
   }
 
   getWatchProviders(id: number) {
-    this.http.get(`${this.END_POINT}/movie/${id}/watch/providers?api_key=${this.API_KEY}`);
+    const apiUrl = `${this.#API}/movie/${id}/watch/providers?api_key=${this.#KEY}&language=${this.#LANG}&region=${this.#REGION}`;
+    this.#http.get(apiUrl);
   }
 }
