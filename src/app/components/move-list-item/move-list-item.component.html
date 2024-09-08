@@ -1,14 +1,14 @@
 <a
-  routerLink="/movie/{{ movie()?.id }}"
+  routerLink="/movie/{{ movie().id }}"
   class="hover:outline hover:outline-dark-500 hover:outline-2 hover:rounded m-1 flex gap-3"
 >
   <div class="flex flex-col md:w-[175px] xl:w-[175px] bg-white rounded">
-    @if (movie()?.poster_path) {
+    @if (movie().poster_path) {
       <div>
         <img
           class="rounded-t-md aspect-auto"
           [ngSrc]="getPoster()"
-          [alt]="movie()?.backdrop_path"
+          [alt]="movie().backdrop_path"
           width="175"
           height="225"
           placeholder="data:image/png;base64,iVBORw0K..."
@@ -21,12 +21,12 @@
 
     <div class="px-2 py-1 border border-t-0 rounded-b-md dark:border-gray-700 pb-3">
       <h4 class="font-semibold text-sm truncate dark:text-white">
-        {{ movie()?.title }}
+        {{ movie().title }}
       </h4>
       <span
         class="bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
       >
-        {{ movie()?.vote_average | number: '1.0-0' }}/10
+        {{ movie().vote_average | number: '1.0-0' }}/10
       </span>
     </div>
   </div>

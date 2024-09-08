@@ -1,7 +1,7 @@
-import {CurrencyPipe, DecimalPipe, NgOptimizedImage} from '@angular/common';
-import {ChangeDetectionStrategy, Component, computed, inject, input} from '@angular/core';
-import {Movie} from '../../models';
-import {MovieService} from '../../services';
+import { CurrencyPipe, DecimalPipe, NgOptimizedImage } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { Movie } from '../../models';
+import { MovieService } from '../../services';
 
 @Component({
   selector: 'app-movie-detail',
@@ -12,7 +12,7 @@ import {MovieService} from '../../services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieDetailComponent {
-  movie = input<Movie | null>();
+  movie = input.required<Movie | null>();
   protected movieService = inject(MovieService);
 
   getPoster = computed(() => {

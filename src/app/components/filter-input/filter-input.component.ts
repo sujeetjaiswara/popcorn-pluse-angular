@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, input, output} from '@angular/core';
-import {Category} from '../../models';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { Category } from '../../models';
 
 @Component({
   selector: 'app-filter-input',
@@ -10,11 +10,11 @@ import {Category} from '../../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterInputComponent {
-  categories = input<Category[]>();
+  categories = input.required<Category[]>();
   selectedCategory = output<string>();
 
   onSelectCategory(event: Event) {
-    const {value} = event.target as HTMLInputElement;
+    const { value } = event.target as HTMLInputElement;
     this.selectedCategory.emit(value);
   }
 }
