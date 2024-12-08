@@ -5,7 +5,6 @@ import { Movie } from '../../models';
 
 @Component({
   selector: 'app-move-list-item',
-  standalone: true,
   imports: [RouterLink, NgOptimizedImage, DecimalPipe],
   templateUrl: './move-list-item.component.html',
   styleUrl: './move-list-item.component.scss',

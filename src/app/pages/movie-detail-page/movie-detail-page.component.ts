@@ -21,7 +21,6 @@ import { MovieDetailShimmerComponent } from './movie-detail-shimmer/movie-detail
 
 @Component({
   selector: 'app-movie-detail-page',
-  standalone: true,
   imports: [
     DecimalPipe,
     CurrencyPipe,

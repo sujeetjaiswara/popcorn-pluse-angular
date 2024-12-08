@@ -5,7 +5,6 @@ import { MovieService } from '../../services/movie.service';
 
 @Component({
   selector: 'app-search-input',
-  standalone: true,
   imports: [FormsModule],
   templateUrl: './search-input.component.html',
   styleUrl: './search-input.component.scss',

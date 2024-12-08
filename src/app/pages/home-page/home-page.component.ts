@@ -24,7 +24,6 @@ import { DataService, MovieService } from '../../services';
 
 @Component({
   selector: 'app-home-page',
-  standalone: true,
   imports: [
     RouterLink,
     SearchInputComponent,

@@ -5,7 +5,6 @@ import { MovieService } from '../../services';
 
 @Component({
   selector: 'app-movie-detail',
-  standalone: true,
   imports: [DecimalPipe, CurrencyPipe, NgOptimizedImage],
   templateUrl: './movie-detail.component.html',
   styleUrl: './movie-detail.component.scss',
