@@ -10,7 +10,6 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import {
   FilterInputComponent,
@@ -18,19 +17,16 @@ import {
   SearchInputComponent,
 } from '../../components';
 import { DataNotFoundComponent } from '../../components/data-not-found/data-not-found.component';
-import { ButtonComponent, CardPlaceholderComponent, SpinnerComponent } from '../../components/ui';
+import { CardPlaceholderComponent } from '../../components/ui';
 import { Category, Movie } from '../../models';
 import { DataService, MovieService } from '../../services';
 
 @Component({
   selector: 'app-home-page',
   imports: [
-    RouterLink,
     SearchInputComponent,
     FilterInputComponent,
     MoveListItemComponent,
-    SpinnerComponent,
-    ButtonComponent,
     CardPlaceholderComponent,
     DataNotFoundComponent,
   ],

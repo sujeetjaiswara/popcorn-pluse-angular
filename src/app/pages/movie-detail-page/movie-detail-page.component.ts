@@ -1,4 +1,3 @@
-import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -22,8 +21,6 @@ import { MovieDetailShimmerComponent } from './movie-detail-shimmer/movie-detail
 @Component({
   selector: 'app-movie-detail-page',
   imports: [
-    DecimalPipe,
-    CurrencyPipe,
     MovieDetailComponent,
     MovieDetailShimmerComponent,
     MoveListItemComponent,
@@ -73,7 +70,6 @@ export class MovieDetailPageComponent {
         takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         next: (data: any) => {
           this.#movieService.setSelectedMovie(data);
         },
