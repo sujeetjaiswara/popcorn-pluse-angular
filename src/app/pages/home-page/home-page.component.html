@@ -1,32 +1,18 @@
 <div class="flex items-center justify-between space-x-2">
   <div class="w-full">
+    <!-- Search -->
     <app-search-input (serachTerm)="onSearchMovie($event)" />
   </div>
-  <div class="w-2/6">
+  <div class="w-2/6H">
+    <!-- Filter -->
     <app-filter-input [categories]="categories()" (selectedCategory)="filterMovies($event)" />
   </div>
 </div>
 
 @if (isLoading && !isLoadingMore) {
-  <div class="grid sm:grid-cols-5 md:grid-cols-6 xl:grid-cols-7 mt-5">
-    <app-card-placeholder />
-    <app-card-placeholder />
-    <app-card-placeholder />
-    <app-card-placeholder />
-    <app-card-placeholder />
-    <app-card-placeholder />
-    <app-card-placeholder />
-    <app-card-placeholder />
-    <app-card-placeholder />
-    <app-card-placeholder />
-    <app-card-placeholder />
-    <app-card-placeholder />
-    <app-card-placeholder />
-    <app-card-placeholder />
-    <app-card-placeholder />
-  </div>
+  <app-movie-item-placeholder />
 } @else {
-  <div class="grid sm:grid-cols-5 md:grid-cols-6 xl:grid-cols-7 mt-3">
+  <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 mt-3">
     @for (movie of movies; track $index) {
       <app-move-list-item [movie]="movie"></app-move-list-item>
     } @empty {
@@ -35,7 +21,7 @@
   </div>
 
   @if (movies.length > 0) {
-    <div class="flex justify-center my-3">
+    <div class="my-3 flex justify-center">
       <!-- <app-button [isDisabled]="isLoadingMore()" (clicked)="loadMore()">
       @if (isLoadingMore()) {
       <app-spinner /> Loading ... }@else { Load More }

@@ -17,9 +17,9 @@ import {
   SearchInputComponent,
 } from '../../components';
 import { DataNotFoundComponent } from '../../components/data-not-found/data-not-found.component';
-import { CardPlaceholderComponent } from '../../components/ui';
 import { Category, Movie } from '../../models';
 import { DataService, MovieService } from '../../services';
+import { MovieItemPlaceholderComponent } from './movie-item-placeholder/movie-item-placeholder.component';
 
 @Component({
   selector: 'app-home-page',
@@ -27,8 +27,8 @@ import { DataService, MovieService } from '../../services';
     SearchInputComponent,
     FilterInputComponent,
     MoveListItemComponent,
-    CardPlaceholderComponent,
     DataNotFoundComponent,
+    MovieItemPlaceholderComponent,
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
