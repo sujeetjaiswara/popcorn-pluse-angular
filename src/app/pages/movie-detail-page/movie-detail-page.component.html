@@ -5,7 +5,12 @@
 }
 
 @if (isLoadingSimilarMovies()) {
-  <div class="grid sm:grid-cols-5 md:grid-cols-6 xl:grid-cols-7 mt-5">
+  <div class="grid sm:grid-cols-5 md:grid-cols-6 xl:grid-cols-7 mt-3 gap-2">
+    <app-card-placeholder />
+    <app-card-placeholder />
+    <app-card-placeholder />
+    <app-card-placeholder />
+    <app-card-placeholder />
     <app-card-placeholder />
     <app-card-placeholder />
     <app-card-placeholder />
@@ -15,7 +20,7 @@
     <app-card-placeholder />
   </div>
 } @else {
-  <div class="grid sm:grid-cols-5 md:grid-cols-6 xl:grid-cols-7 mt-3">
+  <div class="grid sm:grid-cols-5 md:grid-cols-6 xl:grid-cols-7 mt-3 gap-2">
     @for (similarMovies of similarMovies$; track $index) {
       <app-move-list-item [movie]="similarMovies"></app-move-list-item>
     } @empty {
