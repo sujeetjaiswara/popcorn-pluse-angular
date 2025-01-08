@@ -6,7 +6,7 @@
     @if (movie().poster_path) {
       <div>
         <img
-          class="rounded-t-md bg-zinc-200 dark:bg-zinc-900 aspect-autoH border border-b-0"
+          class="rounded-t-md bg-gray-200 dark:bg-gray-900 aspect-autoH border border-b-0"
           [ngSrc]="getPoster()"
           [alt]="movie().backdrop_path"
           width="220"
@@ -15,10 +15,10 @@
         />
       </div>
     } @else {
-      <div class="h-[225px] bg-zinc-200 rounded-t-md aspect-autoH"></div>
+      <div class="h-[273px] bg-gray-200 rounded-t-md aspect-autoH"></div>
     }
 
-    <div class="px-2 py-1 border border-t-0 rounded-b-md dark:border-zinc-700 pb-3">
+    <div class="px-2 py-1 border border-t-0 rounded-b-md dark:border-gray-700 pb-3">
       <h4 class="font-semibold text-sm truncate dark:text-white">
         {{ movie().title }}
       </h4>
